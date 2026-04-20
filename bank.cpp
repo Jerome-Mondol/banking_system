@@ -31,7 +31,6 @@ class User{
             cout << "Account Number: " << account_number << '\n';
             cout << "Balance: " << balance << '\n';
 
-            saveData();
         }
 
         void deposite(double amount) {
@@ -68,16 +67,46 @@ class User{
 
 
 int main() {
-    // Create user
-    User user1("Jerome", 056, 20.6);
+
+    string name;
+    int acc_number;
+    double balance;
+    bool registration_needed = true;
+
+    ifstream inFile("data.txt");
+    if(inFile.is_open()) {
+        if(getline(inFile, name) && (inFile >> acc_number) && (inFile >> balance)) {
+            // cout << "-------- User Detected no need of registration --------" << '\n';
+            registration_needed = false;
+        }
+    }
+
+
+
+    if(registration_needed){
+        cout << "Enter your name for registration: ";
+        getline(cin, name);
+
+        cout << "Enter account number: ";
+        cin >> acc_number;
+
+        cout << "Enter balance: ";
+        cin >> balance;
+    }
+
+    User user1(name, acc_number, balance);
+
+    if(registration_needed) {
+        user1.saveData();
+    }
+
     int choice;
     double amount;
-
 
     cout << "--------Welcome to Goriber Banking System--------" << '\n';
 
     while(true) {
-        cout << "\n1. Check Balance\n2. Deposit\n3. Withdraw\n4. Exit\n";
+        cout << "\n1. Get Info\n2. Deposit\n3. Withdraw\n4. Exit\n";
         cout << "Enter choice: ";   
         cin >> choice;
 
